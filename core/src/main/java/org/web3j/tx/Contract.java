@@ -403,7 +403,7 @@ public abstract class Contract extends ManagedTransaction {
                             receipt.getGasUsedRaw() != null
                                     ? receipt.getGasUsed().toString()
                                     : "unknown",
-                            extractRevertReason(receipt, data, web3j, true)),
+                            extractRevertReason(receipt, data, web3j, true, weiValue)),
                     receipt);
         }
         return receipt;
