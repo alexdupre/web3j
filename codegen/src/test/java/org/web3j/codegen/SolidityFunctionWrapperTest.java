@@ -77,6 +77,7 @@ public class SolidityFunctionWrapperTest extends TempFileProvider {
     public void testCreateValidParamName() {
         assertEquals(createValidParamName("param", 1), ("param"));
         assertEquals(createValidParamName("", 1), ("param1"));
+        assertEquals(createValidParamName("class", 1), ("_class"));
     }
 
     @Test
@@ -695,21 +696,20 @@ public class SolidityFunctionWrapperTest extends TempFileProvider {
                         + "    return responses;\n"
                         + "  }\n"
                         + "\n"
+                        + "  public static TransferEventResponse getTransferEventFromLog(org.web3j.protocol.core.methods.response.Log log) {\n"
+                        + "    org.web3j.tx.Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(TRANSFER_EVENT, log);\n"
+                        + "    TransferEventResponse typedResponse = new TransferEventResponse();\n"
+                        + "    typedResponse.log = log;\n"
+                        + "    typedResponse.id = (byte[]) eventValues.getIndexedValues().get(0).getValue();\n"
+                        + "    typedResponse.from = (java.lang.String) eventValues.getIndexedValues().get(1).getValue();\n"
+                        + "    typedResponse.to = (java.lang.String) eventValues.getIndexedValues().get(2).getValue();\n"
+                        + "    typedResponse.value = (java.math.BigInteger) eventValues.getNonIndexedValues().get(0).getValue();\n"
+                        + "    typedResponse.message = (java.lang.String) eventValues.getNonIndexedValues().get(1).getValue();\n"
+                        + "    return typedResponse;\n"
+                        + "  }\n"
+                        + "\n"
                         + "  public io.reactivex.Flowable<TransferEventResponse> transferEventFlowable(org.web3j.protocol.core.methods.request.EthFilter filter) {\n"
-                        + "    return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<org.web3j.protocol.core.methods.response.Log, TransferEventResponse>() {\n"
-                        + "      @java.lang.Override\n"
-                        + "      public TransferEventResponse apply(org.web3j.protocol.core.methods.response.Log log) {\n"
-                        + "        org.web3j.tx.Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFER_EVENT, log);\n"
-                        + "        TransferEventResponse typedResponse = new TransferEventResponse();\n"
-                        + "        typedResponse.log = log;\n"
-                        + "        typedResponse.id = (byte[]) eventValues.getIndexedValues().get(0).getValue();\n"
-                        + "        typedResponse.from = (java.lang.String) eventValues.getIndexedValues().get(1).getValue();\n"
-                        + "        typedResponse.to = (java.lang.String) eventValues.getIndexedValues().get(2).getValue();\n"
-                        + "        typedResponse.value = (java.math.BigInteger) eventValues.getNonIndexedValues().get(0).getValue();\n"
-                        + "        typedResponse.message = (java.lang.String) eventValues.getNonIndexedValues().get(1).getValue();\n"
-                        + "        return typedResponse;\n"
-                        + "      }\n"
-                        + "    });\n"
+                        + "    return web3j.ethLogFlowable(filter).map(log -> getTransferEventFromLog(log));\n"
                         + "  }\n"
                         + "\n"
                         + "  public io.reactivex.Flowable<TransferEventResponse> transferEventFlowable(org.web3j.protocol.core.DefaultBlockParameter startBlock, org.web3j.protocol.core.DefaultBlockParameter endBlock) {\n"
@@ -731,7 +731,7 @@ public class SolidityFunctionWrapperTest extends TempFileProvider {
                         + "  }\n"
                         + "}\n";
 
-        assertEquals(builder.build().toString(), (expected));
+        assertEquals(expected, builder.build().toString());
     }
 
     @Test
@@ -780,22 +780,21 @@ public class SolidityFunctionWrapperTest extends TempFileProvider {
                         + "    return responses;\n"
                         + "  }\n"
                         + "\n"
+                        + "  public static TransferEventResponse getTransferEventFromLog(org.web3j.protocol.core.methods.response.Log log) {\n"
+                        + "    org.web3j.tx.Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(TRANSFER_EVENT, log);\n"
+                        + "    TransferEventResponse typedResponse = new TransferEventResponse();\n"
+                        + "    typedResponse.log = log;\n"
+                        + "    typedResponse.id = (byte[]) eventValues.getIndexedValues().get(0).getValue();\n"
+                        + "    typedResponse.param1 = (java.lang.String) eventValues.getIndexedValues().get(1).getValue();\n"
+                        + "    typedResponse.to = (java.lang.String) eventValues.getIndexedValues().get(2).getValue();\n"
+                        + "    typedResponse.param3 = (byte[]) eventValues.getNonIndexedValues().get(0).getValue();\n"
+                        + "    typedResponse.param4 = (java.math.BigInteger) eventValues.getNonIndexedValues().get(1).getValue();\n"
+                        + "    typedResponse.message = (java.lang.String) eventValues.getNonIndexedValues().get(2).getValue();\n"
+                        + "    return typedResponse;\n"
+                        + "  }\n"
+                        + "\n"
                         + "  public io.reactivex.Flowable<TransferEventResponse> transferEventFlowable(org.web3j.protocol.core.methods.request.EthFilter filter) {\n"
-                        + "    return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<org.web3j.protocol.core.methods.response.Log, TransferEventResponse>() {\n"
-                        + "      @java.lang.Override\n"
-                        + "      public TransferEventResponse apply(org.web3j.protocol.core.methods.response.Log log) {\n"
-                        + "        org.web3j.tx.Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFER_EVENT, log);\n"
-                        + "        TransferEventResponse typedResponse = new TransferEventResponse();\n"
-                        + "        typedResponse.log = log;\n"
-                        + "        typedResponse.id = (byte[]) eventValues.getIndexedValues().get(0).getValue();\n"
-                        + "        typedResponse.param1 = (java.lang.String) eventValues.getIndexedValues().get(1).getValue();\n"
-                        + "        typedResponse.to = (java.lang.String) eventValues.getIndexedValues().get(2).getValue();\n"
-                        + "        typedResponse.param3 = (byte[]) eventValues.getNonIndexedValues().get(0).getValue();\n"
-                        + "        typedResponse.param4 = (java.math.BigInteger) eventValues.getNonIndexedValues().get(1).getValue();\n"
-                        + "        typedResponse.message = (java.lang.String) eventValues.getNonIndexedValues().get(2).getValue();\n"
-                        + "        return typedResponse;\n"
-                        + "      }\n"
-                        + "    });\n"
+                        + "    return web3j.ethLogFlowable(filter).map(log -> getTransferEventFromLog(log));\n"
                         + "  }\n"
                         + "\n"
                         + "  public io.reactivex.Flowable<TransferEventResponse> transferEventFlowable(org.web3j.protocol.core.DefaultBlockParameter startBlock, org.web3j.protocol.core.DefaultBlockParameter endBlock) {\n"
@@ -851,17 +850,16 @@ public class SolidityFunctionWrapperTest extends TempFileProvider {
                         + "    return responses;\n"
                         + "  }\n"
                         + "\n"
+                        + "  public static TransferEventResponse getTransferEventFromLog(org.web3j.protocol.core.methods.response.Log log) {\n"
+                        + "    org.web3j.tx.Contract.EventValuesWithLog eventValues = staticExtractEventParametersWithLog(TRANSFER_EVENT, log);\n"
+                        + "    TransferEventResponse typedResponse = new TransferEventResponse();\n"
+                        + "    typedResponse.log = log;\n"
+                        + "    typedResponse.array = (java.util.List<java.math.BigInteger>) ((org.web3j.abi.datatypes.Array) eventValues.getNonIndexedValues().get(0)).getNativeValueCopy();\n"
+                        + "    return typedResponse;\n"
+                        + "  }\n"
+                        + "\n"
                         + "  public io.reactivex.Flowable<TransferEventResponse> transferEventFlowable(org.web3j.protocol.core.methods.request.EthFilter filter) {\n"
-                        + "    return web3j.ethLogFlowable(filter).map(new io.reactivex.functions.Function<org.web3j.protocol.core.methods.response.Log, TransferEventResponse>() {\n"
-                        + "      @java.lang.Override\n"
-                        + "      public TransferEventResponse apply(org.web3j.protocol.core.methods.response.Log log) {\n"
-                        + "        org.web3j.tx.Contract.EventValuesWithLog eventValues = extractEventParametersWithLog(TRANSFER_EVENT, log);\n"
-                        + "        TransferEventResponse typedResponse = new TransferEventResponse();\n"
-                        + "        typedResponse.log = log;\n"
-                        + "        typedResponse.array = (java.util.List<java.math.BigInteger>) ((org.web3j.abi.datatypes.Array) eventValues.getNonIndexedValues().get(0)).getNativeValueCopy();\n"
-                        + "        return typedResponse;\n"
-                        + "      }\n"
-                        + "    });\n"
+                        + "    return web3j.ethLogFlowable(filter).map(log -> getTransferEventFromLog(log));\n"
                         + "  }\n"
                         + "\n"
                         + "  public io.reactivex.Flowable<TransferEventResponse> transferEventFlowable(org.web3j.protocol.core.DefaultBlockParameter startBlock, org.web3j.protocol.core.DefaultBlockParameter endBlock) {\n"
@@ -972,5 +970,17 @@ public class SolidityFunctionWrapperTest extends TempFileProvider {
         assertEquals(2, methodSpecs.size());
         assertEquals(expectedCall, methodSpecs.get(0).toString());
         assertEquals(expectedSend, methodSpecs.get(1).toString());
+    }
+
+    @Test
+    public void testBuildFunctionLinkBinaryWithReferences() throws Exception {
+        MethodSpec methodSpec = solidityFunctionWrapper.buildLinkLibraryMethod();
+
+        String expected =
+                "public static void linkLibraries(java.util.List<org.web3j.tx.Contract.LinkReference> references) {\n"
+                        + "  librariesLinkedBinary = linkBinaryWithReferences(BINARY, references);\n"
+                        + "}\n";
+
+        assertEquals(methodSpec.toString(), (expected));
     }
 }

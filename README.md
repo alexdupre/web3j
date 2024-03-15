@@ -1,9 +1,9 @@
 Web3j: Web3 Java Ethereum Ðapp API
 ==================================
 
-[![Documentation Status](https://img.shields.io/travis/web3j/web3j-docs?label=docs)](https://docs.web3j.io/)
-[![Build Status](https://travis-ci.org/web3j/web3j.svg?branch=master)](https://travis-ci.org/web3j/web3j)
-[![codecov](https://codecov.io/gh/web3j/web3j/branch/master/graph/badge.svg)](https://codecov.io/gh/web3j/web3j)
+[![Documentation Status](https://readthedocs.org/projects/web3j-docs/badge/?version=latest)](https://docs.web3j.io)
+[![build status](https://github.com/web3j/web3j/actions/workflows/build.yml/badge.svg)](https://github.com/web3j/web3j/actions/workflows/build.yml)
+[![codecov](https://codecov.io/gh/web3j/web3j/branch/master/graph/badge.svg?token=a4G9ITI6CU)](https://codecov.io/gh/web3j/web3j)
 [![Discord](https://img.shields.io/discord/779382027614158919?label=discord)](https://discord.gg/A9UXfPF2tS)
 
 
@@ -62,8 +62,7 @@ It has five runtime dependencies:
     for HTTP connections
 -   [Jackson Core](https://github.com/FasterXML/jackson-core) for fast
     JSON serialisation/deserialization
--   [Bouncy Castle](https://www.bouncycastle.org/) ([Spongy
-    Castle](https://rtyley.github.io/spongycastle/) on Android) for
+-   [Bouncy Castle](https://www.bouncycastle.org/) for
     crypto
 -   [Jnr-unixsocket](https://github.com/jnr/jnr-unixsocket) for \*nix
     IPC (not available on Android)
@@ -111,7 +110,7 @@ Java:
 <dependency>
   <groupId>org.web3j</groupId>
   <artifactId>core</artifactId>
-  <version>4.8.7</version>
+  <version>4.11.0</version>
 </dependency>
 ```
 
@@ -131,7 +130,7 @@ Gradle
 Java:
 
 ```groovy
-implementation ('org.web3j:core:4.8.7')
+implementation ('org.web3j:core:4.11.0')
 ```
 
 Android:
